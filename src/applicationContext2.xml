@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
+
+	<!-- 配置客户 -->
+	<bean id="customerDao" class="com.test.demo.CustomerDaoImpl"></bean>
+	
+	<!-- 配置切面类 -->
+	<bean id="myAspectXml" class="com.test.demo.MyAspectXml"></bean>
+	
+	<!-- 配置aop -->
+	<aop:config >
+		<aop:aspect ref="myAspectXml">
+			<!-- 切入点表达式 -->
+			
+			<!-- public可省略 -->
+			
+			<!-- void返回值，*代表任意返回值-->
+			<!-- <aop:before method="log" pointcut="execution(* com.test.demo.CustomerDaoImpl.save())"/> -->
+			
+			<!-- 包名可出现*，com.test.*.xxxImpl.save() -->
+			<!-- <aop:before method="log" pointcut="execution(* com.test.*.CustomerDaoImpl.save())"/> -->
+			
+			<!-- 类名中可出现*，*DaoImpl,表示以DaoImpl结尾的类 -->
+			<aop:before method="log" pointcut="execution(* com.test.*.*DaoImpl.save())"/>
+			
+			<!-- 方法中可出现*，save*(),表示以save开头的方法 -->
+			<aop:before method="log" pointcut="execution(public void com.test.demo.CustomerDaoImpl.save())"/>
+			
+			<!-- 参数中可出现*,save(*),表示有一个参数
+			     save(..),表示任意参数
+			 -->
+			<!-- <aop:before method="log" pointcut="execution(* com.test.*.*DaoImpl.save(*))"/> -->
+			<!-- <aop:before method="log" pointcut="execution(* com.test.*.*DaoImpl.save(..))"/> -->
+			 <aop:before method="log" pointcut="execution(* com.test.*.*DaoImpl.save(..))"/> 
+		</aop:aspect>
+	</aop:config>
+</beans>
